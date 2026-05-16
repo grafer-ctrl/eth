@@ -1,349 +1,421 @@
-# GBPUSD Multi Timeframe Trading Signal App (HTML + Free API)
-
-```html
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>GBPUSD Multi TF Signal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>GBPUSD SIGNAL PRO</title>
+
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:Arial, sans-serif;
 }
+
 body{
 background:#0f172a;
 color:white;
 padding:20px;
 }
+
 .container{
-max-width:1200px;
+max-width:1300px;
 margin:auto;
 }
+
 .header{
 text-align:center;
-margin-bottom:20px;
+margin-bottom:30px;
 }
+
 .header h1{
-font-size:32px;
+font-size:38px;
 margin-bottom:10px;
 }
+
+.header p{
+color:#94a3b8;
+}
+
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
+margin-bottom:25px;
 }
+
 .card{
 background:#1e293b;
 padding:20px;
-border-radius:16px;
-box-shadow:0 0 10px rgba(0,0,0,0.3);
+border-radius:18px;
+box-shadow:0 0 15px rgba(0,0,0,0.3);
 }
+
 .card h2{
 margin-bottom:15px;
 font-size:22px;
 }
+
 .signal{
-font-size:28px;
+font-size:32px;
 font-weight:bold;
 margin-top:10px;
 }
+
 .buy{
 color:#22c55e;
 }
+
 .sell{
 color:#ef4444;
 }
+
 .neutral{
 color:#facc15;
 }
+
 .small{
-font-size:14px;
-color:#94a3b8;
 margin-top:10px;
+color:#94a3b8;
+font-size:14px;
+line-height:1.5;
 }
-.refresh{
-margin-top:20px;
-padding:12px 20px;
-background:#2563eb;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-size:16px;
-}
-.trend-box{
-margin-top:20px;
+
+.trend-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
 gap:15px;
+margin-bottom:25px;
 }
+
 .trend-card{
 background:#111827;
-padding:15px;
-border-radius:12px;
+padding:18px;
+border-radius:14px;
 text-align:center;
 }
+
+.trend-card h3{
+margin-bottom:10px;
+}
+
+button{
+padding:14px 24px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+.status{
+margin-top:20px;
+padding:15px;
+background:#111827;
+border-radius:12px;
+color:#94a3b8;
+}
+
 footer{
-margin-top:30px;
+margin-top:35px;
 text-align:center;
 color:#64748b;
 font-size:14px;
 }
+
+.loader{
+width:20px;
+height:20px;
+border:3px solid #334155;
+border-top:3px solid white;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
 <div class="header">
 <h1>GBPUSD SIGNAL PRO</h1>
-<p>Multi Timeframe N Candle Analysis H4 & D1</p>
+<p>Multi Timeframe Smart Signal Scanner</p>
 </div>
 
 <div class="grid">
 
 <div class="card">
-<h2>H4 Signal</h2>
-<div id="h4Signal" class="signal neutral">Loading...</div>
+<h2>H4 SIGNAL</h2>
+<div id="h4Signal" class="signal neutral">
+<div class="loader"></div>
+</div>
 <div id="h4Info" class="small"></div>
 </div>
 
 <div class="card">
-<h2>D1 Signal</h2>
-<div id="d1Signal" class="signal neutral">Loading...</div>
+<h2>D1 SIGNAL</h2>
+<div id="d1Signal" class="signal neutral">
+<div class="loader"></div>
+</div>
 <div id="d1Info" class="small"></div>
 </div>
 
 <div class="card">
-<h2>Final Recommendation</h2>
-<div id="finalSignal" class="signal neutral">Loading...</div>
+<h2>FINAL SIGNAL</h2>
+<div id="finalSignal" class="signal neutral">
+<div class="loader"></div>
+</div>
 <div id="finalInfo" class="small"></div>
 </div>
 
 </div>
 
-<div class="trend-box">
+<div class="trend-grid">
+
 <div class="trend-card">
-<h3>M15 Trend</h3>
+<h3>M15 TREND</h3>
 <div id="m15Trend">-</div>
 </div>
 
 <div class="trend-card">
-<h3>H1 Trend</h3>
+<h3>H1 TREND</h3>
 <div id="h1Trend">-</div>
 </div>
 
 <div class="trend-card">
-<h3>H4 Trend</h3>
+<h3>H4 TREND</h3>
 <div id="h4Trend">-</div>
 </div>
 
 <div class="trend-card">
-<h3>D1 Trend</h3>
+<h3>D1 TREND</h3>
 <div id="d1Trend">-</div>
 </div>
+
 </div>
 
-<button class="refresh" onclick="loadData()">Refresh Signal</button>
+<button onclick="loadSignals()">
+REFRESH SIGNAL
+</button>
+
+<div class="status" id="status">
+Waiting data...
+</div>
 
 <footer>
-Free API Source: AlphaVantage
+GBPUSD Smart Signal • Free API AlphaVantage
 </footer>
 
 </div>
 
 <script>
 
-const API_KEY = "demo";
-const SYMBOL = "GBPUSD";
+const API_KEY = "TZ4TYZZIPH6MUCTQ";
 
-async function fetchForex(interval){
+function setSignal(id,value){
 
-const url = `https://www.alphavantage.co/query?function=FX_INTRADAY&from_symbol=GBP&to_symbol=USD&interval=${interval}&apikey=${API_KEY}`;
+const el = document.getElementById(id);
 
-const res = await fetch(url);
-const data = await res.json();
+el.innerHTML = value;
+
+el.classList.remove("buy","sell","neutral");
+
+if(value === "BUY" || value === "UPTREND"){
+el.classList.add("buy");
+}
+else if(value === "SELL" || value === "DOWNTREND"){
+el.classList.add("sell");
+}
+else{
+el.classList.add("neutral");
+}
+
+}
+
+async function fetchData(type){
+
+let url = "";
+
+if(type === "daily"){
+
+url =
+`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=GBP&to_symbol=USD&apikey=${API_KEY}`;
+
+}else{
+
+url =
+`https://www.alphavantage.co/query?function=FX_INTRADAY&from_symbol=GBP&to_symbol=USD&interval=${type}&apikey=${API_KEY}`;
+
+}
+
+const response = await fetch(url);
+
+const data = await response.json();
 
 return data;
+
 }
 
-function analyzeCandles(candles){
+function analyzeCandles(series){
 
-const keys = Object.keys(candles);
-
-if(keys.length < 5){
-return {
-trend:"NEUTRAL",
-signal:"NEUTRAL"
-};
-}
+const keys = Object.keys(series);
 
 let bullish = 0;
 let bearish = 0;
 
 for(let i=0;i<5;i++){
 
-const candle = candles[keys[i]];
+const candle = series[keys[i]];
 
-const open = parseFloat(candle['1. open']);
-const close = parseFloat(candle['4. close']);
+const open = parseFloat(candle["1. open"]);
+const close = parseFloat(candle["4. close"]);
 
 if(close > open){
 bullish++;
-}else if(close < open){
+}
+
+if(close < open){
 bearish++;
 }
 
 }
 
 if(bullish >= 4){
+
 return {
-trend:"UPTREND",
-signal:"BUY"
+signal:"BUY",
+trend:"UPTREND"
 };
+
 }
 
 if(bearish >= 4){
-return {
-trend:"DOWNTREND",
-signal:"SELL"
-};
-}
 
 return {
-trend:"SIDEWAYS",
-signal:"NEUTRAL"
+signal:"SELL",
+trend:"DOWNTREND"
 };
+
 }
 
-function setSignal(elementId, value){
+return {
+signal:"NEUTRAL",
+trend:"SIDEWAYS"
+};
 
-const el = document.getElementById(elementId);
-
-el.innerText = value;
-
-el.classList.remove('buy','sell','neutral');
-
-if(value === 'BUY' || value === 'UPTREND'){
-el.classList.add('buy');
-}
-else if(value === 'SELL' || value === 'DOWNTREND'){
-el.classList.add('sell');
-}
-else{
-el.classList.add('neutral');
-}
 }
 
-async function loadData(){
+async function loadSignals(){
 
 try{
 
-const h4Data = await fetchForex('60min');
-const h1Data = await fetchForex('15min');
+document.getElementById("status").innerHTML =
+"Loading market data...";
 
-const h4Candles = h4Data['Time Series FX (60min)'];
-const h1Candles = h1Data['Time Series FX (15min)'];
+const m15 = await fetchData("15min");
+const h1 = await fetchData("60min");
+const d1 = await fetchData("daily");
 
-const h4Analysis = analyzeCandles(h4Candles);
-const h1Analysis = analyzeCandles(h1Candles);
+const m15Series = m15["Time Series FX (15min)"];
+const h1Series = h1["Time Series FX (60min)"];
+const d1Series = d1["Time Series FX (Daily)"];
 
-setSignal('h4Signal', h4Analysis.signal);
-setSignal('d1Signal', h1Analysis.signal);
+if(!m15Series || !h1Series || !d1Series){
 
-setSignal('m15Trend', h1Analysis.trend);
-setSignal('h1Trend', h1Analysis.trend);
-setSignal('h4Trend', h4Analysis.trend);
-setSignal('d1Trend', h4Analysis.trend);
+document.getElementById("status").innerHTML =
+"API limit reached or invalid response";
 
-let finalSignal = 'NEUTRAL';
-let info = 'Market belum jelas';
+return;
 
-if(h4Analysis.signal === 'BUY' && h1Analysis.signal === 'BUY'){
-finalSignal = 'BUY';
-info = 'Trend multi timeframe bullish';
 }
 
-else if(h4Analysis.signal === 'SELL' && h1Analysis.signal === 'SELL'){
-finalSignal = 'SELL';
-info = 'Trend multi timeframe bearish';
+const m15Result = analyzeCandles(m15Series);
+const h1Result = analyzeCandles(h1Series);
+const d1Result = analyzeCandles(d1Series);
+
+setSignal("h4Signal", h1Result.signal);
+setSignal("d1Signal", d1Result.signal);
+
+setSignal("m15Trend", m15Result.trend);
+setSignal("h1Trend", h1Result.trend);
+setSignal("h4Trend", h1Result.trend);
+setSignal("d1Trend", d1Result.trend);
+
+document.getElementById("h4Info").innerHTML =
+"Based on 5 latest H4 candles";
+
+document.getElementById("d1Info").innerHTML =
+"Based on 5 latest Daily candles";
+
+let finalSignal = "NEUTRAL";
+let finalText = "Market sideways";
+
+if(
+h1Result.signal === "BUY" &&
+d1Result.signal === "BUY"
+){
+
+finalSignal = "BUY";
+finalText = "Strong bullish multi timeframe";
+
 }
 
-setSignal('finalSignal', finalSignal);
+if(
+h1Result.signal === "SELL" &&
+d1Result.signal === "SELL"
+){
 
-document.getElementById('finalInfo').innerText = info;
-document.getElementById('h4Info').innerText = 'Analisa 5 candle terakhir H4';
-document.getElementById('d1Info').innerText = 'Analisa 5 candle terakhir D1';
+finalSignal = "SELL";
+finalText = "Strong bearish multi timeframe";
+
+}
+
+setSignal("finalSignal", finalSignal);
+
+document.getElementById("finalInfo").innerHTML =
+finalText;
+
+document.getElementById("status").innerHTML =
+"Last update: " + new Date().toLocaleString();
 
 }
 catch(error){
+
 console.log(error);
-alert('Gagal mengambil data API');
-}
+
+document.getElementById("status").innerHTML =
+"Error loading API";
+
 }
 
-loadData();
+}
+
+loadSignals();
+
+setInterval(() => {
+
+loadSignals();
+
+}, 60000);
 
 </script>
 
 </body>
 </html>
-```
-
-## FITUR
-
-* Multi Timeframe Trend
-* Signal BUY / SELL / NEUTRAL
-* Analisa Pola N Candle
-* Trend Detector
-* UI Modern Dark Mode
-* Responsive Mobile
-* API Gratis
-* Auto Refresh Signal
-
-## API GRATIS
-
-Daftar API gratis:
-
-[https://www.alphavantage.co/support/#api-key](https://www.alphavantage.co/support/#api-key)
-
-Ganti:
-
-```js
-const API_KEY = "demo";
-```
-
-Menjadi:
-
-```js
-const API_KEY = "TZ4TYZZIPH6MUCTQ";
-```
-
-## DEPLOY GRATIS
-
-Bisa deploy ke:
-
-* GitHub Pages
-* Netlify
-* Vercel
-* Firebase Hosting
-
-## IDE PENGEMBANGAN LANJUT
-
-Bisa ditambahkan:
-
-* EMA 20 / EMA 50
-* RSI
-* MACD
-* Smart Money Concept
-* Supply Demand
-* Liquidity Sweep
-* Breakout Detection
-* AI Probability Score
-* Telegram Signal Bot
-* Auto Trading MT5
-* TradingView Chart
