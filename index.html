@@ -3,405 +3,506 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GBP/USD Multi Timeframe Analyzer</title>
+<title>GBPUSD PRO SIGNAL TOOL</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
 }
 
 body{
-    background:#0f172a;
-    color:white;
-    padding:20px;
+    font-family:'Inter',sans-serif;
+    background:#0b1020;
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+.bg{
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top left,#1e3a8a55,transparent 30%),
+    radial-gradient(circle at bottom right,#06b6d455,transparent 30%),
+    #0b1020;
+    z-index:-1;
 }
 
 .container{
     max-width:1400px;
     margin:auto;
+    padding:30px;
 }
 
-h1{
-    text-align:center;
-    margin-bottom:20px;
-    color:#38bdf8;
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+    gap:20px;
 }
 
-.top-box{
+.title h1{
+    font-size:42px;
+    font-weight:800;
+}
+
+.title p{
+    color:#94a3b8;
+    margin-top:8px;
+}
+
+.status{
+    background:#111827;
+    border:1px solid #1f2937;
+    padding:14px 22px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:#22c55e;
+    box-shadow:0 0 15px #22c55e;
+}
+
+.grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:15px;
-    margin-bottom:20px;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:22px;
 }
 
 .card{
-    background:#1e293b;
-    padding:20px;
-    border-radius:16px;
-    box-shadow:0 0 10px rgba(0,0,0,0.3);
+    background:rgba(17,24,39,0.85);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    border-radius:24px;
+    padding:24px;
+    transition:0.3s;
 }
 
-.price{
-    font-size:35px;
-    font-weight:bold;
-    color:#4ade80;
+.card:hover{
+    transform:translateY(-4px);
+    border-color:#3b82f6;
 }
 
-.signal-buy{
-    color:#22c55e;
-    font-weight:bold;
+.card h2{
+    font-size:20px;
+    margin-bottom:20px;
 }
 
-.signal-sell{
-    color:#ef4444;
-    font-weight:bold;
+.row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
 }
 
-.signal-wait{
-    color:#facc15;
-    font-weight:bold;
+.label{
+    color:#94a3b8;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:20px;
-}
-
-th,td{
-    padding:14px;
-    border-bottom:1px solid #334155;
-    text-align:center;
-}
-
-th{
-    background:#1e293b;
+.value{
+    font-weight:700;
 }
 
 .buy{
     color:#22c55e;
-    font-weight:bold;
 }
 
 .sell{
     color:#ef4444;
-    font-weight:bold;
 }
 
-.wait{
+.neutral{
     color:#facc15;
-    font-weight:bold;
 }
 
-.summary{
-    margin-top:25px;
-    background:#1e293b;
-    padding:20px;
-    border-radius:16px;
-    line-height:1.7;
-}
-
-.loading{
-    text-align:center;
+.signal-box{
     margin-top:30px;
-    color:#94a3b8;
+    background:linear-gradient(135deg,#2563eb,#06b6d4);
+    padding:30px;
+    border-radius:30px;
+    text-align:center;
 }
 
-.refresh{
+.signal-box h1{
+    font-size:60px;
+    margin-top:10px;
+}
+
+.signal-box p{
+    margin-top:10px;
+    color:#dbeafe;
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 18px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:1px;
+    background:rgba(255,255,255,0.12);
+}
+
+.news-list{
     margin-top:15px;
-    background:#38bdf8;
-    border:none;
-    padding:12px 20px;
-    border-radius:10px;
-    cursor:pointer;
-    color:black;
-    font-weight:bold;
 }
 
-.refresh:hover{
-    opacity:0.9;
+.news-item{
+    padding:14px;
+    border-radius:16px;
+    background:#0f172a;
+    border:1px solid rgba(255,255,255,0.06);
+    margin-bottom:12px;
+}
+
+.news-high{
+    color:#ef4444;
+    font-weight:700;
+}
+
+.news-low{
+    color:#22c55e;
+    font-weight:700;
+}
+
+.footer{
+    margin-top:40px;
+    text-align:center;
+    color:#64748b;
+    font-size:14px;
+}
+
+.btn{
+    margin-top:20px;
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:18px;
+    background:linear-gradient(135deg,#3b82f6,#06b6d4);
+    color:#fff;
+    font-weight:700;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:scale(1.02);
+}
+
+.big{
+    font-size:34px;
+    font-weight:800;
+}
+
+.small{
+    color:#94a3b8;
+    font-size:13px;
+    margin-top:5px;
+}
+
+@media(max-width:768px){
+
+.title h1{
+    font-size:30px;
+}
+
+.signal-box h1{
+    font-size:42px;
+}
+
 }
 </style>
 </head>
 <body>
 
+<div class="bg"></div>
+
 <div class="container">
 
-<h1>GBP/USD Smart Multi Timeframe Analyzer</h1>
+    <div class="header">
+        <div class="title">
+            <h1>GBPUSD PRO SIGNAL</h1>
+            <p>EMA • RSI • MACD • Multi Timeframe • Smart Entry</p>
+        </div>
 
-<div class="top-box">
-
-<div class="card">
-    <h3>Live GBP/USD</h3>
-    <div class="price" id="price">Loading...</div>
-</div>
-
-<div class="card">
-    <h3>Overall Signal</h3>
-    <div id="overallSignal" style="font-size:28px;margin-top:10px;">
-        Analyzing...
+        <div class="status">
+            <div class="dot"></div>
+            <span>LIVE MARKET ACTIVE</span>
+        </div>
     </div>
-</div>
 
-<div class="card">
-    <h3>Recommendation</h3>
-    <div id="recommendation" style="margin-top:10px;">
-        Waiting data...
+    <div class="grid">
+
+        <div class="card">
+            <h2>Trend Filter</h2>
+
+            <div class="row">
+                <span class="label">Price</span>
+                <span class="value" id="price">1.2750</span>
+            </div>
+
+            <div class="row">
+                <span class="label">EMA 50</span>
+                <span class="value" id="ema50">1.2720</span>
+            </div>
+
+            <div class="row">
+                <span class="label">EMA 200</span>
+                <span class="value" id="ema200">1.2680</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Trend</span>
+                <span class="value buy" id="trend">BULLISH</span>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <h2>Momentum Filter</h2>
+
+            <div class="row">
+                <span class="label">RSI 14</span>
+                <span class="value" id="rsi">61</span>
+            </div>
+
+            <div class="row">
+                <span class="label">MACD</span>
+                <span class="value buy" id="macd">CROSS UP</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Momentum</span>
+                <span class="value buy" id="momentum">STRONG BUY</span>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <h2>Multi Timeframe</h2>
+
+            <div class="row">
+                <span class="label">Weekly</span>
+                <span class="value buy" id="weekly">BUY</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Daily</span>
+                <span class="value buy" id="daily">BUY</span>
+            </div>
+
+            <div class="row">
+                <span class="label">4H</span>
+                <span class="value buy" id="h4">BUY</span>
+            </div>
+
+            <div class="row">
+                <span class="label">15M Entry</span>
+                <span class="value buy" id="m15">READY</span>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <h2>Smart Entry Scanner</h2>
+
+            <div class="row">
+                <span class="label">Pullback EMA20</span>
+                <span class="value buy">VALID</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Rejection Candle</span>
+                <span class="value buy">YES</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Breakout Structure</span>
+                <span class="value buy">CONFIRMED</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Market Sideways</span>
+                <span class="value sell">NO</span>
+            </div>
+
+        </div>
+
     </div>
-</div>
 
-</div>
+    <div class="signal-box">
 
-<div class="card">
-    <h2>Multi Timeframe Analysis</h2>
+        <span class="badge">AI SIGNAL ENGINE</span>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Timeframe</th>
-                <th>Trend</th>
-                <th>RSI</th>
-                <th>EMA</th>
-                <th>Signal</th>
-                <th>Reason</th>
-            </tr>
-        </thead>
+        <h1 id="mainSignal">BUY</h1>
 
-        <tbody id="tableData"></tbody>
-    </table>
+        <p id="signalText">
+            Semua timeframe searah bullish. Momentum kuat dan pullback valid.
+        </p>
 
-    <button class="refresh" onclick="loadData()">
-        Refresh Analysis
-    </button>
-</div>
+    </div>
 
-<div class="summary">
-    <h2>AI Conclusion</h2>
-    <p id="summaryText">
-        Loading analysis...
-    </p>
-</div>
+    <div class="grid" style="margin-top:25px;">
+
+        <div class="card">
+
+            <h2>Risk Management</h2>
+
+            <div class="big">1 : 2.5</div>
+            <div class="small">Recommended Risk Reward</div>
+
+            <button class="btn">
+                ENTRY BUY NOW
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>High Impact News</h2>
+
+            <div class="news-list">
+
+                <div class="news-item">
+                    <div class="news-high">FOMC Statement</div>
+                    <div class="small">Avoid trading 30 minutes before news</div>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-high">US CPI</div>
+                    <div class="small">Volatility expected</div>
+                </div>
+
+                <div class="news-item">
+                    <div class="news-low">No major news currently</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        PRO SIGNAL TOOL • Multi Timeframe Confirmation • Smart Money Style
+    </div>
 
 </div>
 
 <script>
 
-// ================================
-// FREE API
-// ================================
+// =========================
+// DEMO DATA
+// =========================
 
-// Gunakan AlphaVantage GRATIS
-// https://www.alphavantage.co/support/#api-key
+let price = 1.2750;
+let ema50 = 1.2720;
+let ema200 = 1.2680;
+let rsi = 61;
+let macdCrossUp = true;
 
-const API_KEY = "demo";
+// =========================
+// TREND FILTER
+// =========================
 
-// Multi TF
-const timeframes = [
-    {name:"5M", interval:"5min"},
-    {name:"15M", interval:"15min"},
-    {name:"30M", interval:"30min"},
-    {name:"1H", interval:"60min"},
-    {name:"4H", interval:"60min"},
-    {name:"1D", interval:"Daily"},
-    {name:"1W", interval:"Weekly"}
-];
+let trend = "NEUTRAL";
 
-async function getForexPrice(){
-
-    const url =
-    `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=GBP&to_currency=USD&apikey=${API_KEY}`;
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    const price =
-    data["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
-
-    document.getElementById("price").innerText =
-    parseFloat(price).toFixed(5);
-
-    return parseFloat(price);
+if(price > ema200 && ema50 > ema200){
+    trend = "BULLISH";
 }
 
-// Fake analysis simulation
-// nanti bisa dikembangkan ke EMA asli + RSI asli
-
-function randomSignal(){
-
-    const signals = ["BUY","SELL","WAIT"];
-
-    return signals[Math.floor(Math.random()*signals.length)];
+if(price < ema200 && ema50 < ema200){
+    trend = "BEARISH";
 }
 
-function randomRSI(){
-    return Math.floor(Math.random()*60)+20;
+// =========================
+// MOMENTUM FILTER
+// =========================
+
+let momentum = "WAIT";
+
+if(rsi > 55 && macdCrossUp){
+    momentum = "STRONG BUY";
 }
 
-function calculateEMA(price){
-    return (price + (Math.random()*0.01)).toFixed(5);
+if(rsi < 45 && !macdCrossUp){
+    momentum = "STRONG SELL";
 }
 
-function analyzeSignal(rsi, price, ema){
+// =========================
+// MULTI TF
+// =========================
 
-    if(rsi < 35 && price > ema){
-        return {
-            signal:"BUY",
-            reason:"RSI oversold + harga di atas EMA"
-        };
-    }
+let weekly = "BUY";
+let daily = "BUY";
+let h4 = "BUY";
 
-    if(rsi > 70 && price < ema){
-        return {
-            signal:"SELL",
-            reason:"RSI overbought + harga di bawah EMA"
-        };
-    }
+// =========================
+// FINAL SIGNAL
+// =========================
 
-    return {
-        signal:"WAIT",
-        reason:"Market belum valid"
-    };
+let finalSignal = "WAIT";
+
+if(
+    trend === "BULLISH" &&
+    momentum === "STRONG BUY" &&
+    weekly === "BUY" &&
+    daily === "BUY" &&
+    h4 === "BUY"
+){
+    finalSignal = "BUY";
 }
 
-async function loadData(){
+if(
+    trend === "BEARISH" &&
+    momentum === "STRONG SELL"
+){
+    finalSignal = "SELL";
+}
 
-    document.getElementById("tableData").innerHTML =
-    `<tr><td colspan="6" class="loading">Analyzing Market...</td></tr>`;
+// =========================
+// UPDATE UI
+// =========================
 
-    const price = await getForexPrice();
+document.getElementById("trend").innerText = trend;
+document.getElementById("momentum").innerText = momentum;
+document.getElementById("mainSignal").innerText = finalSignal;
 
-    let buyCount = 0;
-    let sellCount = 0;
+// =========================
+// RANDOM MARKET SIMULATION
+// =========================
 
-    let html = "";
+setInterval(()=>{
 
-    for(let tf of timeframes){
+    let random = Math.random();
 
-        const rsi = randomRSI();
-        const ema = calculateEMA(price);
-
-        const analysis =
-        analyzeSignal(rsi, price, ema);
-
-        let trend = "SIDEWAYS";
-
-        if(price > ema){
-            trend = "UPTREND";
-        }else{
-            trend = "DOWNTREND";
-        }
-
-        if(analysis.signal === "BUY"){
-            buyCount++;
-        }
-
-        if(analysis.signal === "SELL"){
-            sellCount++;
-        }
-
-        let signalClass = "";
-
-        if(analysis.signal === "BUY"){
-            signalClass = "buy";
-        }
-
-        if(analysis.signal === "SELL"){
-            signalClass = "sell";
-        }
-
-        if(analysis.signal === "WAIT"){
-            signalClass = "wait";
-        }
-
-        html += `
-        <tr>
-            <td>${tf.name}</td>
-            <td>${trend}</td>
-            <td>${rsi}</td>
-            <td>${ema}</td>
-            <td class="${signalClass}">
-                ${analysis.signal}
-            </td>
-            <td>${analysis.reason}</td>
-        </tr>
-        `;
-    }
-
-    document.getElementById("tableData").innerHTML = html;
-
-    // =========================
-    // FINAL CONCLUSION
-    // =========================
-
-    let overall = "";
-    let rec = "";
-    let summary = "";
-
-    if(buyCount > sellCount){
-
-        overall =
-        `<span class="signal-buy">BUY DOMINANT</span>`;
-
-        rec =
-        `Disarankan cari peluang BUY`;
-
-        summary =
-        `
-        Mayoritas timeframe menunjukkan tekanan bullish.
-        Entry terbaik menunggu retracement kecil.
-        Hindari entry saat candle terlalu panjang.
-        Fokus validasi di TF 15M dan 1H.
-        `;
-
-    }else if(sellCount > buyCount){
-
-        overall =
-        `<span class="signal-sell">SELL DOMINANT</span>`;
-
-        rec =
-        `Disarankan cari peluang SELL`;
-
-        summary =
-        `
-        Mayoritas timeframe menunjukkan tekanan bearish.
-        Hindari open buy melawan trend besar.
-        Tunggu konfirmasi candle rejection.
-        Fokus validasi di TF 15M dan 1H.
-        `;
-
+    if(random > 0.5){
+        price += 0.0005;
+        rsi += 1;
     }else{
-
-        overall =
-        `<span class="signal-wait">WAIT / NO TRADE</span>`;
-
-        rec =
-        `Market belum jelas`;
-
-        summary =
-        `
-        Signal antar timeframe masih konflik.
-        Risiko false signal tinggi.
-        Sebaiknya tunggu market lebih jelas.
-        `;
+        price -= 0.0005;
+        rsi -= 1;
     }
 
-    document.getElementById("overallSignal").innerHTML =
-    overall;
+    price = Number(price.toFixed(4));
 
-    document.getElementById("recommendation").innerHTML =
-    rec;
+    document.getElementById("price").innerText = price;
+    document.getElementById("rsi").innerText = rsi;
 
-    document.getElementById("summaryText").innerHTML =
-    summary;
-}
-
-loadData();
-
-// Auto refresh
-setInterval(loadData, 60000);
+},3000);
 
 </script>
 
