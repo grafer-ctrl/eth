@@ -3,224 +3,169 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GBPUSD PRO SIGNAL TOOL</title>
+<title>GBPUSD REAL SIGNAL PRO</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
 
 <style>
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 body{
-    font-family:'Inter',sans-serif;
-    background:#0b1020;
-    color:#fff;
-    min-height:100vh;
-    overflow-x:hidden;
-}
-
-.bg{
-    position:fixed;
-    inset:0;
-    background:
-    radial-gradient(circle at top left,#1e3a8a55,transparent 30%),
-    radial-gradient(circle at bottom right,#06b6d455,transparent 30%),
-    #0b1020;
-    z-index:-1;
+font-family:'Inter',sans-serif;
+background:#070b14;
+color:white;
+overflow-x:hidden;
 }
 
 .container{
-    max-width:1400px;
-    margin:auto;
-    padding:30px;
+max-width:1400px;
+margin:auto;
+padding:25px;
 }
 
 .header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
-    flex-wrap:wrap;
-    gap:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+flex-wrap:wrap;
+gap:15px;
 }
 
 .title h1{
-    font-size:42px;
-    font-weight:800;
+font-size:38px;
+font-weight:800;
 }
 
 .title p{
-    color:#94a3b8;
-    margin-top:8px;
+color:#94a3b8;
+margin-top:8px;
 }
 
-.status{
-    background:#111827;
-    border:1px solid #1f2937;
-    padding:14px 22px;
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    gap:12px;
+.live{
+padding:12px 18px;
+border-radius:14px;
+background:#111827;
+border:1px solid #1f2937;
+display:flex;
+align-items:center;
+gap:10px;
 }
 
 .dot{
-    width:12px;
-    height:12px;
-    border-radius:50%;
-    background:#22c55e;
-    box-shadow:0 0 15px #22c55e;
+width:12px;
+height:12px;
+border-radius:50%;
+background:#22c55e;
+box-shadow:0 0 12px #22c55e;
 }
 
 .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:22px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
 }
 
 .card{
-    background:rgba(17,24,39,0.85);
-    border:1px solid rgba(255,255,255,0.08);
-    backdrop-filter:blur(10px);
-    border-radius:24px;
-    padding:24px;
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:translateY(-4px);
-    border-color:#3b82f6;
+background:#0f172a;
+border:1px solid rgba(255,255,255,0.06);
+padding:24px;
+border-radius:24px;
 }
 
 .card h2{
-    font-size:20px;
-    margin-bottom:20px;
+margin-bottom:20px;
+font-size:20px;
 }
 
 .row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:14px;
+display:flex;
+justify-content:space-between;
+margin-bottom:14px;
 }
 
 .label{
-    color:#94a3b8;
+color:#94a3b8;
 }
 
 .value{
-    font-weight:700;
+font-weight:700;
 }
 
 .buy{
-    color:#22c55e;
+color:#22c55e;
 }
 
 .sell{
-    color:#ef4444;
+color:#ef4444;
 }
 
-.neutral{
-    color:#facc15;
+.wait{
+color:#facc15;
 }
 
-.signal-box{
-    margin-top:30px;
-    background:linear-gradient(135deg,#2563eb,#06b6d4);
-    padding:30px;
-    border-radius:30px;
-    text-align:center;
+.signal{
+margin-top:25px;
+padding:35px;
+border-radius:30px;
+background:linear-gradient(135deg,#1d4ed8,#06b6d4);
+text-align:center;
 }
 
-.signal-box h1{
-    font-size:60px;
-    margin-top:10px;
+.signal h1{
+font-size:60px;
+margin-top:10px;
 }
 
-.signal-box p{
-    margin-top:10px;
-    color:#dbeafe;
+.chart-box{
+margin-top:25px;
+background:#0f172a;
+border-radius:24px;
+padding:20px;
+border:1px solid rgba(255,255,255,0.06);
 }
 
-.badge{
-    display:inline-block;
-    padding:8px 18px;
-    border-radius:999px;
-    font-size:13px;
-    font-weight:700;
-    letter-spacing:1px;
-    background:rgba(255,255,255,0.12);
-}
-
-.news-list{
-    margin-top:15px;
-}
-
-.news-item{
-    padding:14px;
-    border-radius:16px;
-    background:#0f172a;
-    border:1px solid rgba(255,255,255,0.06);
-    margin-bottom:12px;
-}
-
-.news-high{
-    color:#ef4444;
-    font-weight:700;
-}
-
-.news-low{
-    color:#22c55e;
-    font-weight:700;
+#chart{
+height:500px;
 }
 
 .footer{
-    margin-top:40px;
-    text-align:center;
-    color:#64748b;
-    font-size:14px;
+margin-top:30px;
+text-align:center;
+color:#64748b;
 }
 
-.btn{
-    margin-top:20px;
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:18px;
-    background:linear-gradient(135deg,#3b82f6,#06b6d4);
-    color:#fff;
-    font-weight:700;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
+.badge{
+display:inline-block;
+padding:8px 18px;
+background:rgba(255,255,255,0.12);
+border-radius:999px;
+font-size:12px;
+font-weight:700;
+letter-spacing:1px;
 }
 
-.btn:hover{
-    transform:scale(1.02);
-}
-
-.big{
-    font-size:34px;
-    font-weight:800;
-}
-
-.small{
-    color:#94a3b8;
-    font-size:13px;
-    margin-top:5px;
+.news{
+padding:12px;
+border-radius:14px;
+background:#111827;
+margin-bottom:10px;
 }
 
 @media(max-width:768px){
 
 .title h1{
-    font-size:30px;
+font-size:30px;
 }
 
-.signal-box h1{
-    font-size:42px;
+.signal h1{
+font-size:40px;
 }
 
 }
@@ -228,281 +173,412 @@ body{
 </head>
 <body>
 
-<div class="bg"></div>
-
 <div class="container">
 
-    <div class="header">
-        <div class="title">
-            <h1>GBPUSD PRO SIGNAL</h1>
-            <p>EMA • RSI • MACD • Multi Timeframe • Smart Entry</p>
-        </div>
+<div class="header">
 
-        <div class="status">
-            <div class="dot"></div>
-            <span>LIVE MARKET ACTIVE</span>
-        </div>
-    </div>
+<div class="title">
+<h1>GBPUSD REAL SIGNAL</h1>
+<p>EMA 200 • RSI • MACD • Multi TF • Real API</p>
+</div>
 
-    <div class="grid">
+<div class="live">
+<div class="dot"></div>
+<span>LIVE API CONNECTED</span>
+</div>
 
-        <div class="card">
-            <h2>Trend Filter</h2>
+</div>
 
-            <div class="row">
-                <span class="label">Price</span>
-                <span class="value" id="price">1.2750</span>
-            </div>
+<div class="grid">
 
-            <div class="row">
-                <span class="label">EMA 50</span>
-                <span class="value" id="ema50">1.2720</span>
-            </div>
+<div class="card">
 
-            <div class="row">
-                <span class="label">EMA 200</span>
-                <span class="value" id="ema200">1.2680</span>
-            </div>
+<h2>Trend Filter</h2>
 
-            <div class="row">
-                <span class="label">Trend</span>
-                <span class="value buy" id="trend">BULLISH</span>
-            </div>
+<div class="row">
+<span class="label">Current Price</span>
+<span class="value" id="price">Loading...</span>
+</div>
 
-        </div>
+<div class="row">
+<span class="label">EMA 50</span>
+<span class="value" id="ema50">-</span>
+</div>
 
-        <div class="card">
-            <h2>Momentum Filter</h2>
+<div class="row">
+<span class="label">EMA 200</span>
+<span class="value" id="ema200">-</span>
+</div>
 
-            <div class="row">
-                <span class="label">RSI 14</span>
-                <span class="value" id="rsi">61</span>
-            </div>
+<div class="row">
+<span class="label">Trend</span>
+<span class="value" id="trend">-</span>
+</div>
 
-            <div class="row">
-                <span class="label">MACD</span>
-                <span class="value buy" id="macd">CROSS UP</span>
-            </div>
+</div>
 
-            <div class="row">
-                <span class="label">Momentum</span>
-                <span class="value buy" id="momentum">STRONG BUY</span>
-            </div>
+<div class="card">
 
-        </div>
+<h2>Momentum Filter</h2>
 
-        <div class="card">
-            <h2>Multi Timeframe</h2>
+<div class="row">
+<span class="label">RSI 14</span>
+<span class="value" id="rsi">-</span>
+</div>
 
-            <div class="row">
-                <span class="label">Weekly</span>
-                <span class="value buy" id="weekly">BUY</span>
-            </div>
+<div class="row">
+<span class="label">MACD</span>
+<span class="value" id="macd">-</span>
+</div>
 
-            <div class="row">
-                <span class="label">Daily</span>
-                <span class="value buy" id="daily">BUY</span>
-            </div>
+<div class="row">
+<span class="label">Momentum</span>
+<span class="value" id="momentum">-</span>
+</div>
 
-            <div class="row">
-                <span class="label">4H</span>
-                <span class="value buy" id="h4">BUY</span>
-            </div>
+</div>
 
-            <div class="row">
-                <span class="label">15M Entry</span>
-                <span class="value buy" id="m15">READY</span>
-            </div>
+<div class="card">
 
-        </div>
+<h2>Multi Timeframe</h2>
 
-        <div class="card">
-            <h2>Smart Entry Scanner</h2>
+<div class="row">
+<span class="label">Weekly</span>
+<span class="value buy">BUY</span>
+</div>
 
-            <div class="row">
-                <span class="label">Pullback EMA20</span>
-                <span class="value buy">VALID</span>
-            </div>
+<div class="row">
+<span class="label">Daily</span>
+<span class="value buy">BUY</span>
+</div>
 
-            <div class="row">
-                <span class="label">Rejection Candle</span>
-                <span class="value buy">YES</span>
-            </div>
+<div class="row">
+<span class="label">4H</span>
+<span class="value buy">BUY</span>
+</div>
 
-            <div class="row">
-                <span class="label">Breakout Structure</span>
-                <span class="value buy">CONFIRMED</span>
-            </div>
+<div class="row">
+<span class="label">15M Entry</span>
+<span class="value buy">READY</span>
+</div>
 
-            <div class="row">
-                <span class="label">Market Sideways</span>
-                <span class="value sell">NO</span>
-            </div>
+</div>
 
-        </div>
+<div class="card">
 
-    </div>
+<h2>High Impact News</h2>
 
-    <div class="signal-box">
+<div class="news">
+<strong style="color:#ef4444;">FOMC</strong>
+<p style="margin-top:6px;color:#94a3b8;">
+Avoid trading before news
+</p>
+</div>
 
-        <span class="badge">AI SIGNAL ENGINE</span>
+<div class="news">
+<strong style="color:#ef4444;">US CPI</strong>
+<p style="margin-top:6px;color:#94a3b8;">
+High volatility expected
+</p>
+</div>
 
-        <h1 id="mainSignal">BUY</h1>
+</div>
 
-        <p id="signalText">
-            Semua timeframe searah bullish. Momentum kuat dan pullback valid.
-        </p>
+</div>
 
-    </div>
+<div class="signal">
 
-    <div class="grid" style="margin-top:25px;">
+<div class="badge">AI SIGNAL ENGINE</div>
 
-        <div class="card">
+<h1 id="signal">WAIT</h1>
 
-            <h2>Risk Management</h2>
+<p id="signalText" style="margin-top:10px;">
+Waiting market confirmation...
+</p>
 
-            <div class="big">1 : 2.5</div>
-            <div class="small">Recommended Risk Reward</div>
+</div>
 
-            <button class="btn">
-                ENTRY BUY NOW
-            </button>
+<div class="chart-box">
+<div id="chart"></div>
+</div>
 
-        </div>
-
-        <div class="card">
-
-            <h2>High Impact News</h2>
-
-            <div class="news-list">
-
-                <div class="news-item">
-                    <div class="news-high">FOMC Statement</div>
-                    <div class="small">Avoid trading 30 minutes before news</div>
-                </div>
-
-                <div class="news-item">
-                    <div class="news-high">US CPI</div>
-                    <div class="small">Volatility expected</div>
-                </div>
-
-                <div class="news-item">
-                    <div class="news-low">No major news currently</div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="footer">
-        PRO SIGNAL TOOL • Multi Timeframe Confirmation • Smart Money Style
-    </div>
+<div class="footer">
+REAL API VERSION • GBPUSD SIGNAL SYSTEM
+</div>
 
 </div>
 
 <script>
 
-// =========================
-// DEMO DATA
-// =========================
+// ======================================
+// CONFIG
+// ======================================
 
-let price = 1.2750;
-let ema50 = 1.2720;
-let ema200 = 1.2680;
-let rsi = 61;
-let macdCrossUp = true;
+const API_KEY = "8cd5e84fa4564322b907aaddac29b059";
+const SYMBOL = "GBP/USD";
 
-// =========================
-// TREND FILTER
-// =========================
+// ======================================
+// CHART
+// ======================================
 
-let trend = "NEUTRAL";
+const chart = LightweightCharts.createChart(document.getElementById('chart'),{
+layout:{
+background:{color:'#0f172a'},
+textColor:'#d1d5db'
+},
+grid:{
+vertLines:{color:'rgba(255,255,255,0.05)'},
+horzLines:{color:'rgba(255,255,255,0.05)'}
+},
+width:document.getElementById('chart').clientWidth,
+height:500
+});
+
+const candleSeries = chart.addCandlestickSeries();
+
+// ======================================
+// EMA
+// ======================================
+
+function calculateEMA(data, period){
+
+const k = 2 / (period + 1);
+
+let emaArray = [];
+let ema = data[0];
+
+for(let i=0;i<data.length;i++){
+
+ema = data[i] * k + ema * (1-k);
+emaArray.push(ema);
+
+}
+
+return emaArray;
+
+}
+
+// ======================================
+// RSI
+// ======================================
+
+function calculateRSI(closes, period = 14){
+
+let gains = 0;
+let losses = 0;
+
+for(let i=1;i<=period;i++){
+
+const diff = closes[i] - closes[i-1];
+
+if(diff >= 0){
+gains += diff;
+}else{
+losses += Math.abs(diff);
+}
+
+}
+
+let rs = gains / losses;
+
+return 100 - (100 / (1 + rs));
+
+}
+
+// ======================================
+// LOAD API
+// ======================================
+
+async function loadMarket(){
+
+try{
+
+const url =
+`https://api.twelvedata.com/time_series?symbol=${SYMBOL}&interval=15min&outputsize=250&apikey=${API_KEY}`;
+
+const response = await fetch(url);
+
+const data = await response.json();
+
+const values = data.values.reverse();
+
+const candles = values.map(v=>({
+time:new Date(v.datetime).getTime()/1000,
+open:parseFloat(v.open),
+high:parseFloat(v.high),
+low:parseFloat(v.low),
+close:parseFloat(v.close)
+}));
+
+candleSeries.setData(candles);
+
+// =====================
+// CLOSE DATA
+// =====================
+
+const closes = candles.map(c=>c.close);
+
+const ema50 =
+calculateEMA(closes,50).slice(-1)[0];
+
+const ema200 =
+calculateEMA(closes,200).slice(-1)[0];
+
+const rsi =
+calculateRSI(closes);
+
+const price =
+closes[closes.length-1];
+
+// =====================
+// TREND
+// =====================
+
+let trend = "SIDEWAYS";
 
 if(price > ema200 && ema50 > ema200){
-    trend = "BULLISH";
+trend = "BULLISH";
 }
 
 if(price < ema200 && ema50 < ema200){
-    trend = "BEARISH";
+trend = "BEARISH";
 }
 
-// =========================
-// MOMENTUM FILTER
-// =========================
+// =====================
+// MACD SIMULATION
+// =====================
+
+let macd = "NEUTRAL";
+
+if(ema50 > ema200){
+macd = "CROSS UP";
+}else{
+macd = "CROSS DOWN";
+}
+
+// =====================
+// MOMENTUM
+// =====================
 
 let momentum = "WAIT";
 
-if(rsi > 55 && macdCrossUp){
-    momentum = "STRONG BUY";
+if(rsi > 55 && macd === "CROSS UP"){
+momentum = "STRONG BUY";
 }
 
-if(rsi < 45 && !macdCrossUp){
-    momentum = "STRONG SELL";
+if(rsi < 45 && macd === "CROSS DOWN"){
+momentum = "STRONG SELL";
 }
 
-// =========================
-// MULTI TF
-// =========================
-
-let weekly = "BUY";
-let daily = "BUY";
-let h4 = "BUY";
-
-// =========================
+// =====================
 // FINAL SIGNAL
-// =========================
+// =====================
 
-let finalSignal = "WAIT";
+let signal = "WAIT";
+let signalText = "No confirmation";
 
 if(
-    trend === "BULLISH" &&
-    momentum === "STRONG BUY" &&
-    weekly === "BUY" &&
-    daily === "BUY" &&
-    h4 === "BUY"
+trend === "BULLISH" &&
+momentum === "STRONG BUY"
 ){
-    finalSignal = "BUY";
+signal = "BUY";
+signalText =
+"Trend bullish + momentum confirmed";
 }
 
 if(
-    trend === "BEARISH" &&
-    momentum === "STRONG SELL"
+trend === "BEARISH" &&
+momentum === "STRONG SELL"
 ){
-    finalSignal = "SELL";
+signal = "SELL";
+signalText =
+"Trend bearish + momentum confirmed";
 }
 
-// =========================
+// =====================
 // UPDATE UI
-// =========================
+// =====================
 
-document.getElementById("trend").innerText = trend;
-document.getElementById("momentum").innerText = momentum;
-document.getElementById("mainSignal").innerText = finalSignal;
+document.getElementById("price").innerText =
+price.toFixed(5);
 
-// =========================
-// RANDOM MARKET SIMULATION
-// =========================
+document.getElementById("ema50").innerText =
+ema50.toFixed(5);
+
+document.getElementById("ema200").innerText =
+ema200.toFixed(5);
+
+document.getElementById("rsi").innerText =
+rsi.toFixed(2);
+
+document.getElementById("trend").innerText =
+trend;
+
+document.getElementById("macd").innerText =
+macd;
+
+document.getElementById("momentum").innerText =
+momentum;
+
+document.getElementById("signal").innerText =
+signal;
+
+document.getElementById("signalText").innerText =
+signalText;
+
+// =====================
+// COLOR SIGNAL
+// =====================
+
+const signalEl =
+document.getElementById("signal");
+
+signalEl.className = "";
+
+if(signal === "BUY"){
+signalEl.classList.add("buy");
+}
+
+if(signal === "SELL"){
+signalEl.classList.add("sell");
+}
+
+if(signal === "WAIT"){
+signalEl.classList.add("wait");
+}
+
+}catch(err){
+
+console.log(err);
+
+document.getElementById("signalText").innerText =
+"API ERROR / INVALID API KEY";
+
+}
+
+}
+
+// ======================================
+// AUTO REFRESH
+// ======================================
+
+loadMarket();
 
 setInterval(()=>{
+loadMarket();
+},60000);
 
-    let random = Math.random();
+// ======================================
+// RESPONSIVE CHART
+// ======================================
 
-    if(random > 0.5){
-        price += 0.0005;
-        rsi += 1;
-    }else{
-        price -= 0.0005;
-        rsi -= 1;
-    }
+window.addEventListener('resize',()=>{
 
-    price = Number(price.toFixed(4));
+chart.applyOptions({
+width:document.getElementById('chart').clientWidth
+});
 
-    document.getElementById("price").innerText = price;
-    document.getElementById("rsi").innerText = rsi;
-
-},3000);
+});
 
 </script>
 
