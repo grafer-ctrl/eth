@@ -1,586 +1,419 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GBPUSD REAL SIGNAL PRO</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GBPUSD Price Action Signal</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script src="https://s3.tradingview.com/tv.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+    body{
+      background:#0f172a;
+      color:white;
+      padding:20px;
+    }
 
-body{
-font-family:'Inter',sans-serif;
-background:#070b14;
-color:white;
-overflow-x:hidden;
-}
+    .container{
+      max-width:1400px;
+      margin:auto;
+    }
 
-.container{
-max-width:1400px;
-margin:auto;
-padding:25px;
-}
+    .header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+      gap:10px;
+    }
 
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:25px;
-flex-wrap:wrap;
-gap:15px;
-}
+    .title{
+      font-size:32px;
+      font-weight:bold;
+    }
 
-.title h1{
-font-size:38px;
-font-weight:800;
-}
+    .live-price{
+      background:#111827;
+      padding:15px 25px;
+      border-radius:15px;
+      font-size:24px;
+      font-weight:bold;
+      border:1px solid #1f2937;
+    }
 
-.title p{
-color:#94a3b8;
-margin-top:8px;
-}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:20px;
+      margin-bottom:20px;
+    }
 
-.live{
-padding:12px 18px;
-border-radius:14px;
-background:#111827;
-border:1px solid #1f2937;
-display:flex;
-align-items:center;
-gap:10px;
-}
+    .card{
+      background:#111827;
+      padding:20px;
+      border-radius:20px;
+      border:1px solid #1f2937;
+      box-shadow:0 0 20px rgba(0,0,0,0.3);
+    }
 
-.dot{
-width:12px;
-height:12px;
-border-radius:50%;
-background:#22c55e;
-box-shadow:0 0 12px #22c55e;
-}
+    .card h2{
+      margin-bottom:15px;
+      font-size:20px;
+    }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
-}
+    .signal{
+      font-size:50px;
+      font-weight:bold;
+      text-align:center;
+      margin:20px 0;
+    }
 
-.card{
-background:#0f172a;
-border:1px solid rgba(255,255,255,0.06);
-padding:24px;
-border-radius:24px;
-}
+    .buy{
+      color:#22c55e;
+    }
 
-.card h2{
-margin-bottom:20px;
-font-size:20px;
-}
+    .sell{
+      color:#ef4444;
+    }
 
-.row{
-display:flex;
-justify-content:space-between;
-margin-bottom:14px;
-}
+    .wait{
+      color:#facc15;
+    }
 
-.label{
-color:#94a3b8;
-}
+    .info{
+      display:flex;
+      justify-content:space-between;
+      margin:10px 0;
+      padding:10px;
+      background:#1e293b;
+      border-radius:10px;
+    }
 
-.value{
-font-weight:700;
-}
+    .chart-container{
+      background:#111827;
+      padding:15px;
+      border-radius:20px;
+      border:1px solid #1f2937;
+    }
 
-.buy{
-color:#22c55e;
-}
+    #tradingview_chart{
+      height:600px;
+    }
 
-.sell{
-color:#ef4444;
-}
+    .footer{
+      text-align:center;
+      margin-top:20px;
+      color:#94a3b8;
+    }
 
-.wait{
-color:#facc15;
-}
+    .status{
+      margin-top:15px;
+      text-align:center;
+      font-size:14px;
+      color:#94a3b8;
+    }
 
-.signal{
-margin-top:25px;
-padding:35px;
-border-radius:30px;
-background:linear-gradient(135deg,#1d4ed8,#06b6d4);
-text-align:center;
-}
+    @media(max-width:768px){
+      .signal{
+        font-size:36px;
+      }
 
-.signal h1{
-font-size:60px;
-margin-top:10px;
-}
+      .title{
+        font-size:24px;
+      }
 
-.chart-box{
-margin-top:25px;
-background:#0f172a;
-border-radius:24px;
-padding:20px;
-border:1px solid rgba(255,255,255,0.06);
-}
+      .live-price{
+        font-size:18px;
+      }
 
-#chart{
-height:500px;
-}
+      #tradingview_chart{
+        height:400px;
+      }
+    }
 
-.footer{
-margin-top:30px;
-text-align:center;
-color:#64748b;
-}
-
-.badge{
-display:inline-block;
-padding:8px 18px;
-background:rgba(255,255,255,0.12);
-border-radius:999px;
-font-size:12px;
-font-weight:700;
-letter-spacing:1px;
-}
-
-.news{
-padding:12px;
-border-radius:14px;
-background:#111827;
-margin-bottom:10px;
-}
-
-@media(max-width:768px){
-
-.title h1{
-font-size:30px;
-}
-
-.signal h1{
-font-size:40px;
-}
-
-}
-</style>
+  </style>
 </head>
+
 <body>
 
 <div class="container">
 
-<div class="header">
+  <div class="header">
+    <div class="title">GBPUSD PRICE ACTION SIGNAL</div>
+    <div class="live-price" id="livePrice">
+      Loading...
+    </div>
+  </div>
 
-<div class="title">
-<h1>GBPUSD REAL SIGNAL</h1>
-<p>EMA 200 • RSI • MACD • Multi TF • Real API</p>
-</div>
+  <div class="grid">
 
-<div class="live">
-<div class="dot"></div>
-<span>LIVE API CONNECTED</span>
-</div>
+    <div class="card">
+      <h2>MAIN SIGNAL</h2>
 
-</div>
+      <div id="signal" class="signal wait">
+        WAIT
+      </div>
 
-<div class="grid">
+      <div class="info">
+        <span>Trend H4</span>
+        <span id="trendH4">Loading...</span>
+      </div>
 
-<div class="card">
+      <div class="info">
+        <span>Entry H1</span>
+        <span id="entryH1">Loading...</span>
+      </div>
 
-<h2>Trend Filter</h2>
+      <div class="info">
+        <span>Confidence</span>
+        <span id="confidence">0%</span>
+      </div>
 
-<div class="row">
-<span class="label">Current Price</span>
-<span class="value" id="price">Loading...</span>
-</div>
+    </div>
 
-<div class="row">
-<span class="label">EMA 50</span>
-<span class="value" id="ema50">-</span>
-</div>
+    <div class="card">
+      <h2>PRICE ACTION</h2>
 
-<div class="row">
-<span class="label">EMA 200</span>
-<span class="value" id="ema200">-</span>
-</div>
+      <div class="info">
+        <span>Breakout</span>
+        <span id="breakout">-</span>
+      </div>
 
-<div class="row">
-<span class="label">Trend</span>
-<span class="value" id="trend">-</span>
-</div>
+      <div class="info">
+        <span>Engulfing</span>
+        <span id="engulfing">-</span>
+      </div>
 
-</div>
+      <div class="info">
+        <span>Rejection</span>
+        <span id="rejection">-</span>
+      </div>
 
-<div class="card">
+      <div class="info">
+        <span>BOS</span>
+        <span id="bos">-</span>
+      </div>
 
-<h2>Momentum Filter</h2>
+    </div>
 
-<div class="row">
-<span class="label">RSI 14</span>
-<span class="value" id="rsi">-</span>
-</div>
+    <div class="card">
+      <h2>TRADE SETUP</h2>
 
-<div class="row">
-<span class="label">MACD</span>
-<span class="value" id="macd">-</span>
-</div>
+      <div class="info">
+        <span>Entry</span>
+        <span id="entryPrice">-</span>
+      </div>
 
-<div class="row">
-<span class="label">Momentum</span>
-<span class="value" id="momentum">-</span>
-</div>
+      <div class="info">
+        <span>Stop Loss</span>
+        <span id="slPrice">-</span>
+      </div>
 
-</div>
+      <div class="info">
+        <span>Take Profit</span>
+        <span id="tpPrice">-</span>
+      </div>
 
-<div class="card">
+      <div class="info">
+        <span>Risk Reward</span>
+        <span>1 : 2</span>
+      </div>
 
-<h2>Multi Timeframe</h2>
+    </div>
 
-<div class="row">
-<span class="label">Weekly</span>
-<span class="value buy">BUY</span>
-</div>
+  </div>
 
-<div class="row">
-<span class="label">Daily</span>
-<span class="value buy">BUY</span>
-</div>
+  <div class="chart-container">
+    <div id="tradingview_chart"></div>
+  </div>
 
-<div class="row">
-<span class="label">4H</span>
-<span class="value buy">BUY</span>
-</div>
+  <div class="status" id="status">
+    Fetching realtime market data...
+  </div>
 
-<div class="row">
-<span class="label">15M Entry</span>
-<span class="value buy">READY</span>
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>High Impact News</h2>
-
-<div class="news">
-<strong style="color:#ef4444;">FOMC</strong>
-<p style="margin-top:6px;color:#94a3b8;">
-Avoid trading before news
-</p>
-</div>
-
-<div class="news">
-<strong style="color:#ef4444;">US CPI</strong>
-<p style="margin-top:6px;color:#94a3b8;">
-High volatility expected
-</p>
-</div>
-
-</div>
-
-</div>
-
-<div class="signal">
-
-<div class="badge">AI SIGNAL ENGINE</div>
-
-<h1 id="signal">WAIT</h1>
-
-<p id="signalText" style="margin-top:10px;">
-Waiting market confirmation...
-</p>
-
-</div>
-
-<div class="chart-box">
-<div id="chart"></div>
-</div>
-
-<div class="footer">
-REAL API VERSION • GBPUSD SIGNAL SYSTEM
-</div>
+  <div class="footer">
+    GBPUSD Signal Tool • Price Action Strategy • H4 + H1
+  </div>
 
 </div>
 
 <script>
 
-// ======================================
-// CONFIG
-// ======================================
+  new TradingView.widget({
+    "width": "100%",
+    "height": 600,
+    "symbol": "FX:GBPUSD",
+    "interval": "60",
+    "timezone": "Etc/UTC",
+    "theme": "dark",
+    "style": "1",
+    "locale": "en",
+    "toolbar_bg": "#111827",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "save_image": false,
+    "container_id": "tradingview_chart"
+  });
 
-const API_KEY = "8cd5e84fa4564322b907aaddac29b059";
-const SYMBOL = "GBP/USD";
+  async function fetchForexData() {
 
-// ======================================
-// CHART
-// ======================================
+    try {
 
-const chart = LightweightCharts.createChart(document.getElementById('chart'),{
-layout:{
-background:{color:'#0f172a'},
-textColor:'#d1d5db'
-},
-grid:{
-vertLines:{color:'rgba(255,255,255,0.05)'},
-horzLines:{color:'rgba(255,255,255,0.05)'}
-},
-width:document.getElementById('chart').clientWidth,
-height:500
-});
+      document.getElementById("status").innerText = "Loading market data...";
 
-const candleSeries = chart.addCandlestickSeries();
+      const response = await fetch(
+        "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD=X?interval=1h&range=5d"
+      );
 
-// ======================================
-// EMA
-// ======================================
+      const data = await response.json();
 
-function calculateEMA(data, period){
+      const result = data.chart.result[0];
 
-const k = 2 / (period + 1);
+      const closes = result.indicators.quote[0].close;
+      const opens = result.indicators.quote[0].open;
+      const highs = result.indicators.quote[0].high;
+      const lows = result.indicators.quote[0].low;
 
-let emaArray = [];
-let ema = data[0];
+      const latestClose = closes[closes.length - 1];
+      const prevClose = closes[closes.length - 2];
 
-for(let i=0;i<data.length;i++){
+      const latestOpen = opens[opens.length - 1];
+      const prevOpen = opens[opens.length - 2];
 
-ema = data[i] * k + ema * (1-k);
-emaArray.push(ema);
+      const latestHigh = highs[highs.length - 1];
+      const latestLow = lows[lows.length - 1];
 
-}
+      document.getElementById("livePrice").innerText =
+        latestClose.toFixed(5);
 
-return emaArray;
+      // ===== TREND H4 =====
 
-}
+      let trend = "SIDEWAYS";
 
-// ======================================
-// RSI
-// ======================================
+      const sma20 =
+        closes.slice(-20).reduce((a,b)=>a+b,0) / 20;
 
-function calculateRSI(closes, period = 14){
+      const sma50 =
+        closes.slice(-50).reduce((a,b)=>a+b,0) / 50;
 
-let gains = 0;
-let losses = 0;
+      if(sma20 > sma50){
+        trend = "BULLISH";
+      } else if(sma20 < sma50){
+        trend = "BEARISH";
+      }
 
-for(let i=1;i<=period;i++){
+      document.getElementById("trendH4").innerText = trend;
 
-const diff = closes[i] - closes[i-1];
+      // ===== ENGULFING =====
 
-if(diff >= 0){
-gains += diff;
-}else{
-losses += Math.abs(diff);
-}
+      let engulfing = "NO";
 
-}
+      if(
+        latestClose > latestOpen &&
+        prevClose < prevOpen &&
+        latestClose > prevOpen
+      ){
+        engulfing = "BULLISH";
+      }
 
-let rs = gains / losses;
+      if(
+        latestClose < latestOpen &&
+        prevClose > prevOpen &&
+        latestClose < prevOpen
+      ){
+        engulfing = "BEARISH";
+      }
 
-return 100 - (100 / (1 + rs));
+      document.getElementById("engulfing").innerText = engulfing;
 
-}
+      // ===== BREAKOUT =====
 
-// ======================================
-// LOAD API
-// ======================================
+      const resistance =
+        Math.max(...highs.slice(-20));
 
-async function loadMarket(){
+      const support =
+        Math.min(...lows.slice(-20));
 
-try{
+      let breakout = "NONE";
 
-const url =
-`https://api.twelvedata.com/time_series?symbol=${SYMBOL}&interval=15min&outputsize=250&apikey=${API_KEY}`;
+      if(latestClose > resistance * 0.9995){
+        breakout = "UP";
+      }
 
-const response = await fetch(url);
+      if(latestClose < support * 1.0005){
+        breakout = "DOWN";
+      }
 
-const data = await response.json();
+      document.getElementById("breakout").innerText = breakout;
 
-const values = data.values.reverse();
+      // ===== REJECTION =====
 
-const candles = values.map(v=>({
-time:new Date(v.datetime).getTime()/1000,
-open:parseFloat(v.open),
-high:parseFloat(v.high),
-low:parseFloat(v.low),
-close:parseFloat(v.close)
-}));
+      let rejection = "NO";
 
-candleSeries.setData(candles);
+      const upperWick = latestHigh - Math.max(latestOpen, latestClose);
+      const lowerWick = Math.min(latestOpen, latestClose) - latestLow;
 
-// =====================
-// CLOSE DATA
-// =====================
+      if(lowerWick > upperWick * 2){
+        rejection = "BULLISH";
+      }
 
-const closes = candles.map(c=>c.close);
+      if(upperWick > lowerWick * 2){
+        rejection = "BEARISH";
+      }
 
-const ema50 =
-calculateEMA(closes,50).slice(-1)[0];
+      document.getElementById("rejection").innerText = rejection;
 
-const ema200 =
-calculateEMA(closes,200).slice(-1)[0];
+      // ===== BOS =====
 
-const rsi =
-calculateRSI(closes);
+      let bos = "NONE";
 
-const price =
-closes[closes.length-1];
+      if(latestClose > prevClose){
+        bos = "BULLISH";
+      } else {
+        bos = "BEARISH";
+      }
 
-// =====================
-// TREND
-// =====================
+      document.getElementById("bos").innerText = bos;
 
-let trend = "SIDEWAYS";
+      // ===== CONFIDENCE =====
 
-if(price > ema200 && ema50 > ema200){
-trend = "BULLISH";
-}
+      let confidence = 0;
 
-if(price < ema200 && ema50 < ema200){
-trend = "BEARISH";
-}
+      if(trend === "BULLISH") confidence += 30;
+      if(trend === "BEARISH") confidence += 30;
 
-// =====================
-// MACD SIMULATION
-// =====================
+      if(engulfing === "BULLISH") confidence += 20;
+      if(engulfing === "BEARISH") confidence += 20;
 
-let macd = "NEUTRAL";
+      if(breakout === "UP") confidence += 20;
+      if(breakout === "DOWN") confidence += 20;
 
-if(ema50 > ema200){
-macd = "CROSS UP";
-}else{
-macd = "CROSS DOWN";
-}
+      if(rejection === "BULLISH") confidence += 15;
+      if(rejection === "BEARISH") confidence += 15;
 
-// =====================
-// MOMENTUM
-// =====================
+      if(bos === "BULLISH") confidence += 15;
+      if(bos === "BEARISH") confidence += 15;
 
-let momentum = "WAIT";
+      document.getElementById("confidence").innerText =
+        confidence + "%";
 
-if(rsi > 55 && macd === "CROSS UP"){
-momentum = "STRONG BUY";
-}
+      // ===== FINAL SIGNAL =====
 
-if(rsi < 45 && macd === "CROSS DOWN"){
-momentum = "STRONG SELL";
-}
+      let signal = "WAIT";
+      let signalClass = "wait";
 
-// =====================
-// FINAL SIGNAL
-// =====================
-
-let signal = "WAIT";
-let signalText = "No confirmation";
-
-if(
-trend === "BULLISH" &&
-momentum === "STRONG BUY"
-){
-signal = "BUY";
-signalText =
-"Trend bullish + momentum confirmed";
-}
-
-if(
-trend === "BEARISH" &&
-momentum === "STRONG SELL"
-){
-signal = "SELL";
-signalText =
-"Trend bearish + momentum confirmed";
-}
-
-// =====================
-// UPDATE UI
-// =====================
-
-document.getElementById("price").innerText =
-price.toFixed(5);
-
-document.getElementById("ema50").innerText =
-ema50.toFixed(5);
-
-document.getElementById("ema200").innerText =
-ema200.toFixed(5);
-
-document.getElementById("rsi").innerText =
-rsi.toFixed(2);
-
-document.getElementById("trend").innerText =
-trend;
-
-document.getElementById("macd").innerText =
-macd;
-
-document.getElementById("momentum").innerText =
-momentum;
-
-document.getElementById("signal").innerText =
-signal;
-
-document.getElementById("signalText").innerText =
-signalText;
-
-// =====================
-// COLOR SIGNAL
-// =====================
-
-const signalEl =
-document.getElementById("signal");
-
-signalEl.className = "";
-
-if(signal === "BUY"){
-signalEl.classList.add("buy");
-}
-
-if(signal === "SELL"){
-signalEl.classList.add("sell");
-}
-
-if(signal === "WAIT"){
-signalEl.classList.add("wait");
-}
-
-}catch(err){
-
-console.log(err);
-
-document.getElementById("signalText").innerText =
-"API ERROR / INVALID API KEY";
-
-}
-
-}
-
-// ======================================
-// AUTO REFRESH
-// ======================================
-
-loadMarket();
-
-setInterval(()=>{
-loadMarket();
-},60000);
-
-// ======================================
-// RESPONSIVE CHART
-// ======================================
-
-window.addEventListener('resize',()=>{
-
-chart.applyOptions({
-width:document.getElementById('chart').clientWidth
-});
-
-});
-
-</script>
-
-</body>
-</html>
+      if(
+        trend === "BULLISH" &&
+        engulfing === "BULLISH" &&
+        breakout === "UP"
+      ){
+        signal = "BUY";
+        signalClass = "
